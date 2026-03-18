@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -14,7 +14,7 @@
         })();
 
         window.addEventListener('DOMContentLoaded', function() {
-            // Mobile menu toggle functionality (custom implementation)
+            // Mobile menu toggle functionality
             const navbarToggler = document.querySelector('.navbar-toggler');
             const navbarCollapse = document.querySelector('.navbar-collapse');
 
@@ -53,6 +53,36 @@
             document.querySelectorAll('.resume-section').forEach(function(section) {
                 observer.observe(section);
             });
+
+            // Certificate modal functionality
+            const modal = document.getElementById('certModal');
+            const modalImg = document.getElementById('modalImg');
+            const modalTitle = document.getElementById('modalTitle');
+            const closeModal = document.querySelector('.modal-close');
+            const certCards = document.querySelectorAll('.cert-card');
+
+            certCards.forEach(function(card) {
+                card.addEventListener('click', function() {
+                    const img = card.querySelector('img');
+                    const title = card.querySelector('h4').textContent;
+                    modalImg.src = img.src;
+                    modalTitle.textContent = title;
+                    modal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            closeModal.addEventListener('click', function() {
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            });
+
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
         });
     </script>
     <style>
@@ -63,22 +93,22 @@
             padding: 0;
         }
 
-        /* CSS Custom Properties with OKLCH colors */
+        /* CSS Custom Properties */
         :root {
             --hue-primary: 165;
             --hue-accent: 25;
 
-            /* Light theme */
-            --color-bg: #f8fafc;
-            --color-surface: #ffffff;
-            --color-surface-elevated: #ffffff;
-            --color-text: #0f172a;
-            --color-text-muted: #475569;
-            --color-primary: #0d9488;
-            --color-primary-light: #14b8a6;
-            --color-accent: #f97316;
-            --color-border: #e2e8f0;
-            --color-shadow: rgba(0, 0, 0, 0.08);
+            /* Dark theme (default) */
+            --color-bg: #0f172a;
+            --color-surface: #1e293b;
+            --color-surface-elevated: #334155;
+            --color-text: #f8fafc;
+            --color-text-muted: #94a3b8;
+            --color-primary: #2dd4bf;
+            --color-primary-light: #5eead4;
+            --color-accent: #fb923c;
+            --color-border: #334155;
+            --color-shadow: rgba(0, 0, 0, 0.3);
 
             /* Typography */
             --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
@@ -105,35 +135,6 @@
             --transition-base: 250ms ease;
         }
 
-        /* Dark theme */
-        [data-theme="dark"] {
-            --color-bg: #0f172a;
-            --color-surface: #1e293b;
-            --color-surface-elevated: #334155;
-            --color-text: #f8fafc;
-            --color-text-muted: #94a3b8;
-            --color-primary: #2dd4bf;
-            --color-primary-light: #5eead4;
-            --color-accent: #fb923c;
-            --color-border: #334155;
-            --color-shadow: rgba(0, 0, 0, 0.3);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root:not([data-theme="light"]) {
-                --color-bg: #0f172a;
-                --color-surface: #1e293b;
-                --color-surface-elevated: #334155;
-                --color-text: #f8fafc;
-                --color-text-muted: #94a3b8;
-                --color-primary: #2dd4bf;
-                --color-primary-light: #5eead4;
-                --color-accent: #fb923c;
-                --color-border: #334155;
-                --color-shadow: rgba(0, 0, 0, 0.3);
-            }
-        }
-
         html {
             scroll-behavior: smooth;
             font-size: 16px;
@@ -145,7 +146,7 @@
             }
         }
 
-        *{
+        * {
             max-width: 100%;
         }
 
@@ -188,6 +189,11 @@
             font-weight: 600;
         }
 
+        h4 {
+            font-size: clamp(1rem, 2.5vw, 1.125rem);
+            font-weight: 600;
+        }
+
         p {
             margin-bottom: var(--space-md);
             color: var(--color-text-muted);
@@ -204,22 +210,18 @@
             color: var(--color-accent);
         }
 
-        /* Navigation - Fixed top for mobile, sidebar for desktop */
+        /* Navigation */
         #sideNav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             z-index: 1030;
-            background: rgba(248, 250, 252, 0.95);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--color-border);
             padding: var(--space-md) var(--space-lg);
-        }
-
-        [data-theme="dark"] #sideNav {
-            background: rgba(15, 23, 42, 0.95);
         }
 
         .navbar {
@@ -248,7 +250,6 @@
             color: var(--color-primary);
         }
 
-        /* FIXED: Desktop-only and mobile-only display classes */
         .d-lg-none {
             display: block !important;
         }
@@ -341,7 +342,7 @@
         .nav-link:hover,
         .nav-link.active {
             color: var(--color-primary);
-            background: rgba(13, 148, 136, 0.1);
+            background: rgba(45, 212, 191, 0.1);
         }
 
         /* Desktop sidebar layout */
@@ -441,7 +442,7 @@
 
         /* About Section */
         #about {
-            background: linear-gradient(135deg, var(--color-bg) 0%, rgba(13, 148, 136, 0.05) 100%);
+            background: linear-gradient(135deg, var(--color-bg) 0%, rgba(45, 212, 191, 0.05) 100%);
         }
 
         .text-primary {
@@ -510,10 +511,10 @@
 
         .social-icon:hover {
             background: var(--color-primary);
-            color: white;
+            color: #0f172a;
             border-color: var(--color-primary);
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(13, 148, 136, 0.3);
+            box-shadow: 0 8px 25px rgba(45, 212, 191, 0.3);
         }
 
         /* Experience Cards */
@@ -530,7 +531,7 @@
         .experience-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 10px 40px var(--color-shadow);
-            border-color: rgba(13, 148, 136, 0.3);
+            border-color: rgba(45, 212, 191, 0.3);
         }
 
         .experience-header {
@@ -552,7 +553,7 @@
             font-size: 0.8rem;
             font-weight: 500;
             color: var(--color-primary);
-            background: rgba(13, 148, 136, 0.1);
+            background: rgba(45, 212, 191, 0.1);
             padding: var(--space-xs) var(--space-sm);
             border-radius: var(--radius-full);
             white-space: nowrap;
@@ -661,27 +662,226 @@
             margin-top: 0.25rem;
         }
 
-        /* Awards */
+        /* Certificates & Awards Section */
+        .certs-section {
+            margin-top: var(--space-xl);
+        }
+
+        .certs-tabs {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+            flex-wrap: wrap;
+        }
+
+        .cert-tab {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+            background: transparent;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            padding: var(--space-sm) var(--space-lg);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .cert-tab:hover {
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .cert-tab.active {
+            color: #0f172a;
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: var(--space-lg);
+        }
+
+        @media (min-width: 640px) {
+            .certs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .certs-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .cert-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all var(--transition-base);
+            cursor: pointer;
+            box-shadow: 0 1px 3px var(--color-shadow);
+        }
+
+        .cert-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px var(--color-shadow);
+            border-color: rgba(45, 212, 191, 0.4);
+        }
+
+        .cert-image {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            background: var(--color-surface-elevated);
+            transition: transform var(--transition-base);
+        }
+
+        .cert-card:hover .cert-image {
+            transform: scale(1.05);
+        }
+
+        .cert-content {
+            padding: var(--space-md);
+        }
+
+        .cert-content h4 {
+            color: var(--color-text);
+            margin-bottom: var(--space-xs);
+            font-size: 0.95rem;
+        }
+
+        .cert-content p {
+            color: var(--color-text-muted);
+            font-size: 0.8rem;
+            margin-bottom: 0;
+        }
+
+        .cert-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-full);
+            margin-bottom: var(--space-sm);
+        }
+
+        .cert-badge.certificate {
+            color: #2dd4bf;
+            background: rgba(45, 212, 191, 0.15);
+        }
+
+        .cert-badge.award {
+            color: #fb923c;
+            background: rgba(251, 146, 60, 0.15);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-lg);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-title {
+            color: var(--color-text);
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            margin-top: var(--space-md);
+            text-align: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -3rem;
+            right: 0;
+            background: transparent;
+            border: none;
+            color: var(--color-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: var(--space-sm);
+            transition: color var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            color: var(--color-primary);
+        }
+
+        /* Awards List (for non-image awards) */
         .awards-list {
             list-style: none !important;
             padding: 0;
-            margin: 0;
+            margin: var(--space-xl) 0 0 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-md);
+        }
+
+        @media (min-width: 640px) {
+            .awards-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         .awards-list li {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: var(--space-md);
-            padding: var(--space-md) 0;
-            font-size: clamp(0.9rem, 3vw, 1.125rem);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            font-size: clamp(0.9rem, 3vw, 1rem);
             list-style: none !important;
+            transition: all var(--transition-base);
+        }
+
+        .awards-list li:hover {
+            border-color: rgba(251, 146, 60, 0.4);
+            transform: translateX(4px);
         }
 
         .awards-list i {
             color: var(--color-accent);
             font-size: 1.25rem;
             flex-shrink: 0;
-            margin-top: 0.125rem;
         }
 
         /* Dividers */
@@ -763,6 +963,10 @@
                 width: 2.75rem;
                 height: 2.75rem;
             }
+
+            .certs-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Small mobile devices */
@@ -803,6 +1007,10 @@
                 height: 2.5rem;
                 font-size: 1.1rem;
             }
+
+            .cert-content {
+                padding: var(--space-sm);
+            }
         }
 
         /* Landscape mobile */
@@ -824,7 +1032,8 @@
         /* Print Styles */
         @media print {
             #sideNav,
-            .social-icons {
+            .social-icons,
+            .modal {
                 display: none !important;
             }
 
@@ -858,11 +1067,6 @@
         /* High contrast mode support */
         @media (prefers-contrast: more) {
             :root {
-                --color-border: #000000;
-                --color-shadow: rgba(0, 0, 0, 0.5);
-            }
-
-            [data-theme="dark"] {
                 --color-border: #ffffff;
                 --color-shadow: rgba(255, 255, 255, 0.3);
             }
@@ -893,6 +1097,7 @@
 </nav>
 
 <div class="container-fluid p-0">
+    <!-- About Section -->
     <section class="resume-section" id="about">
         <div class="resume-section-content">
             <h1 class="mb-0">
@@ -904,10 +1109,10 @@
             </div>
             <p class="lead mb-5">Dedicated to delivering high-impact digital solutions through cross-functional collaboration and Agile rigor. By prioritizing continuous improvement and stakeholder alignment, I transform complex requirements into seamless, high-performance applications that drive user engagement and business value.</p>
             <div class="social-icons">
-                <a class="social-icon" href="https://www.linkedin.com/in/julien-harfouche-600090226" aria-label="LinkedIn">
+                <a class="social-icon" href="https://www.linkedin.com/in/julien-harfouche-600090226" aria-label="LinkedIn" target="_blank" rel="noopener">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
-                <a class="social-icon" href="https://github.com/JulienHarfouche" aria-label="GitHub">
+                <a class="social-icon" href="https://github.com/JulienHarfouche" aria-label="GitHub" target="_blank" rel="noopener">
                     <i class="fab fa-github"></i>
                 </a>
             </div>
@@ -916,6 +1121,7 @@
 
     <hr />
 
+    <!-- Experience Section -->
     <section class="resume-section" id="experience">
         <div class="resume-section-content">
             <h2 class="mb-5">Experience</h2>
@@ -946,6 +1152,7 @@
 
     <hr />
 
+    <!-- Education Section -->
     <section class="resume-section" id="education">
         <div class="resume-section-content">
             <h2 class="mb-5">Education</h2>
@@ -977,6 +1184,7 @@
 
     <hr />
 
+    <!-- Skills Section -->
     <section class="resume-section" id="skills">
         <div class="resume-section-content">
             <h2 class="mb-5">Skills</h2>
@@ -998,7 +1206,7 @@
                         <li class="list-inline-item"><i class="devicon-mongodb-plain colored" title="MongoDB"></i></li>
                         <li class="list-inline-item"><i class="devicon-git-plain colored" title="Git"></i></li>
                         <li class="list-inline-item"><i class="devicon-github-plain colored" title="GitHub"></i></li>
-                        <li class="list-inline-item"><i class="devicon-visualstudio-plain colored" title="Visual Studio Code"></i></li>
+                        <li class="list-inline-item"><i class="devicon-vscode-plain colored" title="VS Code"></i></li>
                         <li class="list-inline-item"><i class="devicon-intellij-plain colored" title="IntelliJ IDEA"></i></li>
                         <li class="list-inline-item"><i class="devicon-phpstorm-plain colored" title="PHPStorm"></i></li>
                         <li class="list-inline-item"><i class="devicon-pycharm-plain colored" title="PyCharm"></i></li>
@@ -1026,29 +1234,72 @@
 
     <hr />
 
+    <!-- Awards & Certifications Section -->
     <section class="resume-section" id="awards">
         <div class="resume-section-content">
             <h2 class="mb-5">Awards & Certifications</h2>
-            <ul class="awards-list">
-                <li>
-                    <i class="fas fa-trophy"></i>
-                    <span>Junior Web Developer</span>
-                </li>
-                <li>
-                    <i class="fas fa-certificate"></i>
-                    <span>Introduction to JavaScript – SoloLearn Certificate</span>
-                </li>
-                <li>
-                    <i class="fas fa-certificate"></i>
-                    <span>Introduction to Java – SoloLearn Certificate</span>
-                </li>
-                <li>
-                    <i class="fas fa-certificate"></i>
-                    <span>Introduction to Python – SoloLearn Certificate</span>
-                </li>
-            </ul>
+
+            <!-- Certificates with Images -->
+            <div class="certs-section">
+                <h3 style="color: var(--color-primary); margin-bottom: var(--space-lg); font-size: 1.25rem;">
+                    <i class="fas fa-certificate" style="margin-right: var(--space-sm);"></i>Certificates
+                </h3>
+                <div class="certs-grid">
+                    <div class="cert-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 200px;">
+                        <div class="cert-content">
+                            <span class="cert-badge certificate"><i class="fas fa-award"></i> Certificate</span>
+                            <h4>Junior Web Developer</h4>
+                            <p>ISAE CNAM Liban</p>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <img src="images/cert-csharp.png" alt="Foundational C# with Microsoft Certificate" class="cert-image">
+                        <div class="cert-content">
+                            <span class="cert-badge certificate"><i class="fas fa-award"></i> Certificate</span>
+                            <h4>Foundational C# with Microsoft</h4>
+                            <p>freeCodeCamp & Microsoft - March 2026</p>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <img src="images/cert-javascript.png" alt="Introduction to JavaScript Certificate" class="cert-image">
+                        <div class="cert-content">
+                            <span class="cert-badge certificate"><i class="fas fa-award"></i> Certificate</span>
+                            <h4>Introduction to JavaScript</h4>
+                            <p>SoloLearn - July 2024</p>
+                        </div>
+                    </div>
+
+                    <div class="cert-card">
+                        <img src="images/cert-java.png" alt="Introduction to Java Certificate" class="cert-image">
+                        <div class="cert-content">
+                            <span class="cert-badge certificate"><i class="fas fa-award"></i> Certificate</span>
+                            <h4>Introduction to Java</h4>
+                            <p>SoloLearn - June 2024</p>
+                        </div>
+                    </div>
+
+                    <div class="cert-card">
+                        <img src="images/cert-python.png" alt="Introduction to Python Certificate" class="cert-image">
+                        <div class="cert-content">
+                            <span class="cert-badge certificate"><i class="fas fa-award"></i> Certificate</span>
+                            <h4>Introduction to Python</h4>
+                            <p>SoloLearn - August 2025</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </div>
+
+<!-- Certificate Modal -->
+<div class="modal" id="certModal">
+    <div class="modal-content">
+        <button class="modal-close"><i class="fas fa-times"></i></button>
+        <img src="" alt="Certificate" class="modal-image" id="modalImg">
+        <h3 class="modal-title" id="modalTitle"></h3>
+    </div>
+</div>
+
 </body>
 </html>
