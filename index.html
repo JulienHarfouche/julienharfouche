@@ -54,21 +54,31 @@
                 observer.observe(section);
             });
 
-            // Certificate modal functionality
+            // Image/modal functionality (used for certificates and projects)
             const modal = document.getElementById('certModal');
             const modalImg = document.getElementById('modalImg');
             const modalTitle = document.getElementById('modalTitle');
             const closeModal = document.querySelector('.modal-close');
-            const certCards = document.querySelectorAll('.cert-card');
 
-            certCards.forEach(function(card) {
+            // Helper to open modal
+            function openInModal(imgSrc, title) {
+                if (!imgSrc) return;
+                modalImg.src = imgSrc;
+                modalTitle.textContent = title || '';
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Attach click handlers to both certificate and project cards
+            const clickableCards = document.querySelectorAll('.cert-card, .project-card');
+            clickableCards.forEach(function(card) {
                 card.addEventListener('click', function() {
                     const img = card.querySelector('img');
-                    const title = card.querySelector('h4').textContent;
-                    modalImg.src = img.src;
-                    modalTitle.textContent = title;
-                    modal.classList.add('show');
-                    document.body.style.overflow = 'hidden';
+                    const titleEl = card.querySelector('h4');
+                    const title = titleEl ? titleEl.textContent : '';
+                    if (img && img.src) {
+                        openInModal(img.src, title);
+                    }
                 });
             });
 
@@ -732,6 +742,77 @@
             border-color: rgba(45, 212, 191, 0.4);
         }
 
+        /* Projects grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+
+        .project-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+            border-color: rgba(45,212,191,0.25);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: var(--color-surface-elevated);
+        }
+
+        .project-content {
+            padding: var(--space-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+            flex: 1 1 auto;
+        }
+
+        .project-content h4 {
+            margin: 0;
+            color: var(--color-text);
+            font-size: 1rem;
+        }
+
+        .project-content p {
+            margin: 0;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive project grid */
+        @media (max-width: 1024px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .project-image {
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .project-image {
+                height: 180px;
+            }
+        }
+
         .cert-image {
             width: 100%;
             aspect-ratio: 4/3;
@@ -1232,6 +1313,42 @@
         </div>
     </section>
 
+    <!-- Projects Section -->
+    <section class="resume-section" id="projects">
+        <div class="resume-section-content">
+            <h2 class="mb-5">Projects</h2>
+
+            <div class="projects-grid">
+                <div class="project-card">
+                    <img src="POS%20App.png" alt="Project 1" class="project-image">
+                    <div class="project-content">
+                        <span class="cert-badge certificate"><i class="fas fa-folder-open"></i> Project</span>
+                        <h4>POS App</h4>
+                        <p>A fully functional POS App for a retail store that is connected to an SQLite database and update data in real time with ful synchronization across all pages of the app.</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="Expense%20Tracker.png" alt="Project 2" class="project-image">
+                    <div class="project-content">
+                        <span class="cert-badge certificate"><i class="fas fa-folder-open"></i> Project</span>
+                        <h4>Expense Tracker</h4>
+                        <p>Expense Tracker app that allows the user the track and manage his budget and expenses with visual graphs that compares the data for a set period of time</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="Remote%20Dashboard.png" alt="Project 3" class="project-image">
+                    <div class="project-content">
+                        <span class="cert-badge certificate"><i class="fas fa-folder-open"></i> Project</span>
+                        <h4>POS App Remote Dashboard</h4>
+                        <p>A remote dashboard webpage that is connected to the POS App that allows the user/store owner to access stock levels, total sales and more data without having to be in-store.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <hr />
 
     <!-- Awards & Certifications Section -->
@@ -1253,7 +1370,7 @@
                         </div>
                     </div>
                     <div class="cert-card">
-                        <img src="cert-csharp.png" alt="Foundational C# with Microsoft Certificate" class="cert-image">
+                        <img src="cert-csharp.jpeg" alt="Foundational C# with Microsoft Certificate" class="cert-image">
                         <div class="cert-content">
                             <span class="cert-badge certificate"><i class="fas fa-award"></i> Certificate</span>
                             <h4>Foundational C# with Microsoft</h4>
